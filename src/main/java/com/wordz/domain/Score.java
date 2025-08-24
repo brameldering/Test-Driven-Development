@@ -1,4 +1,4 @@
-package com.wordz;
+package com.wordz.domain;
 
 import java.util.ArrayList;
 import java.util.List;

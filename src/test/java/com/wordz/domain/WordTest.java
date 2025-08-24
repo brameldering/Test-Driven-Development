@@ -39,7 +39,5 @@ public class WordTest {
            Letter expected = expectedScores[position];
            assertThat (score.letter(position)).isEqualTo(expected);
        }
-
    }
-
 }

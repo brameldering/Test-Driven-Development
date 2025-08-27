@@ -1,9 +1,12 @@
 package com.wordz.domain;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,11 +23,16 @@ public class WordSelectionTest {
     @Mock
     private RandomNumbers randomNumbers;
 
+    @BeforeEach
+    void beforeEachTest() {
+        when(repository.highestWordNumber()).thenReturn(HIGHEST_WORD_NUMBER);
+//        when(repository.fetchWordByNumber(WORD_NUMBER_SHINE)).thenReturn("SHINE");
+        when(repository.fetchWordByNumber(anyInt())).thenReturn("SHINE");
+    }
+
     @Test
     void selectsWordAtRandom() {
-        when(repository.highestWordNumber()).thenReturn(HIGHEST_WORD_NUMBER);
         when(randomNumbers.next(HIGHEST_WORD_NUMBER)).thenReturn(WORD_NUMBER_SHINE);
-        when(repository.fetchWordByNumber(WORD_NUMBER_SHINE)).thenReturn("SHINE");
 
         var selection = new WordSelection(repository, randomNumbers);
 

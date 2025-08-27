@@ -1,0 +1,74 @@
+@startuml
+' Define all classes and interfaces
+class com.wordz.domain.WordSelection {
+    -repository: WordRepository
+    -randomNumbers: RandomNumbers
+    +WordSelection(repository: WordRepository, randomNumbers: RandomNumbers)
+    +chooseRandomWord(): String
+}
+
+interface com.wordz.domain.WordRepository {
+    +fetchWordByNumber(number: int): String
+    +highestWordNumber(): int
+}
+
+interface com.wordz.domain.RandomNumbers {
+    +next(upperBoundInclusive: int): int
+}
+
+class com.wordz.domain.Word {
+    -word: String
+    +Word(correctWord: String)
+    +guess(attempt: String): Score
+}
+
+class com.wordz.domain.Score {
+    -correctWord: String
+    -results: List<Letter>
+    -position: int
+    +Score(correctWord: String)
+    +letter(position: int): Letter
+    +assess(attempt: String)
+    -isCorrectLetter(currentLetter: char): boolean
+    -occursInWord(current: char): boolean
+    -scoreFor(current: char): Letter
+}
+
+enum com.wordz.domain.Letter {
+    INCORRECT
+    PART_CORRECT
+    CORRECT
+}
+
+class com.wordz.domain.WordSelectionException {
+    +WordSelectionException(message: String, t: Throwable)
+}
+
+class com.wordz.domain.WordRepositoryException {
+    +WordRepositoryException()
+    +WordRepositoryException(message: String)
+}
+
+' Define relationships
+
+' WordSelection depends on WordRepository and RandomNumbers
+com.wordz.domain.WordSelection --> com.wordz.domain.WordRepository : uses
+com.wordz.domain.WordSelection --> com.wordz.domain.RandomNumbers : uses
+com.wordz.domain.WordSelection ..> com.wordz.domain.WordSelectionException : throws
+com.wordz.domain.WordSelection ..> com.wordz.domain.WordRepositoryException : catches
+
+' Word depends on Score
+com.wordz.domain.Word --> com.wordz.domain.Score : creates
+
+' Score uses Letter
+com.wordz.domain.Score --> com.wordz.domain.Letter : uses
+
+' Exceptions
+java.lang.RuntimeException <|-- com.wordz.domain.WordSelectionException
+java.lang.RuntimeException <|-- com.wordz.domain.WordRepositoryException
+
+' Standard Java classes (optional, for clarity)
+java.util.ArrayList <|-- com.wordz.domain.Score
+java.util.List <|-- com.wordz.domain.Score
+
+@enduml

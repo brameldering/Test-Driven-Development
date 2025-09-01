@@ -34,11 +34,11 @@ public class Game {
         return targetWord;
     }
 
-    public Score attempt(String guess) {
+    public Score attempt(String latestGuess) {
         trackNumberOfAttempts();
 
         var word = new Word(targetWord);
-        Score score = word.guess(guess);
+        Score score = word.guess(latestGuess);
 
         if (score.allCorrect()) {
             end();

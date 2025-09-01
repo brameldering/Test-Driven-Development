@@ -3,6 +3,8 @@ package com.wordz.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.unmodifiableList;
+
 public class Score {
 
     private final String correctWord;
@@ -22,6 +24,18 @@ public class Score {
             results.add(scoreFor(current));
             position++;
         }
+    }
+
+    public boolean allCorrect() {
+        var totalCorrect = results.stream()
+                .filter(letter -> letter == Letter.CORRECT)
+                .count();
+
+        return totalCorrect == results.size();
+    }
+
+    public List<Letter> letters() {
+        return unmodifiableList(results);
     }
 
     private boolean isCorrectLetter (char currentLetter) {
